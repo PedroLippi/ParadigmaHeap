@@ -1,3 +1,7 @@
+//Leonardo Amaral
+//Guilherme Guimarães
+//Pedro Lippi
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -29,14 +33,14 @@ void inicializa_heap(int** heap, int N)
     }
 }
 
-// Função para alocar um processo com o algoritmo First Fit
+// Função para alocar um bloco com o algoritmo First Fit
 int first_fit(int* heap, lista** L, int N) 
 {
     lista* aux = *L;
     while (aux != NULL) 
     {
         if (aux->tamanho >= N) 
-        { // Foi encontrado um espaço que possa armazenar o processo
+        { // Foi encontrado um espaço que possa armazenar o bloco
             int inicio = aux->inicio;
             for (int i = aux->inicio; i < aux->inicio + N; i++) 
             {
@@ -45,7 +49,7 @@ int first_fit(int* heap, lista** L, int N)
 
             // Ajustar área livre
             if (aux->tamanho == N) 
-            { // Área livre é igual ao tamanho do processo
+            { // Área livre é igual ao tamanho do bloco
                 *L = aux->prox;
                 free(aux);
             } else { // Caso haja espaço livre restante
@@ -60,14 +64,14 @@ int first_fit(int* heap, lista** L, int N)
     return -1; // Não há memória suficiente 
 }
 
-// Função para alocar um processo com o algoritmo Next Fit
+// Função para alocar um bloco com o algoritmo Next Fit
 int next_fit(int* heap, lista** L, int N) 
 {
     lista* aux = PontoBusca ? PontoBusca : *L;
     while (aux != NULL) 
     {
         if (aux->tamanho >= N) 
-        { // Foi encontrado um espaço que possa armazenar o processo
+        { // Foi encontrado um espaço que possa armazenar o bloco
             int inicio = aux->inicio;
             for (int i = aux->inicio; i < aux->inicio + N; i++) 
             {
@@ -97,7 +101,7 @@ int next_fit(int* heap, lista** L, int N)
     return -1;
 }
 
-// Função para alocar um processo com o algoritmo Best Fit
+// Função para alocar um bloco com o algoritmo Best Fit
 int best_fit(int* heap, lista** L, int N) 
 {
     int bloco_mais_adequado = -1;
@@ -107,7 +111,7 @@ int best_fit(int* heap, lista** L, int N)
     while (aux != NULL) 
     {
         if (aux->tamanho >= N) 
-        { // Encontrou um espaço que suporta o processo
+        { // Encontrou um espaço que suporta o bloco
             int diferenca = aux->tamanho - N;
             if (diferenca < min_diferenca) 
             { // Encontrou o melhor bloco (menor diferença)
@@ -148,7 +152,7 @@ int best_fit(int* heap, lista** L, int N)
     return -1; // Não há memória suficiente
 }
 
-// Função para alocar um processo com o algoritmo Worst Fit
+// Função para alocar um bloco com o algoritmo Worst Fit
 int worst_fit(int* heap, lista** L, int N) 
 {
     int bloco_mais_adequado = -1;
@@ -158,7 +162,7 @@ int worst_fit(int* heap, lista** L, int N)
     while (aux != NULL) 
     {
         if (aux->tamanho >= N) 
-        { // Encontrou um espaço que suporta o processo
+        { // Encontrou um espaço que suporta o bloco
             int diferenca = aux->tamanho - N;
             if (diferenca > max_diferenca) 
             { // Encontrou o maior bloco (maior diferença)
@@ -199,8 +203,8 @@ int worst_fit(int* heap, lista** L, int N)
     return -1; // Não há memória suficiente
 }
 
-// Função para remover um processo da heap e liberar o espaço
-void remover_processos(int* heap, lista** L, int inicio, int tamanho) 
+// Função para remover um bloco da heap e liberar o espaço
+void remover_bloco(int* heap, lista** L, int inicio, int tamanho) 
 {
     // Marca as posições na heap como livres (0)
     for (int i = inicio; i < inicio + tamanho; i++) 
@@ -298,7 +302,7 @@ int main()
 
         if (op == 2) 
         {
-            printf("\nDigite o tamanho do processo: ");
+            printf("\nDigite o tamanho do bloco: ");
             scanf("%d", &tamanho);
             printf("\nDigite qual tipo de alocação deseja: ");
             printf("\n1 - First fit\n2 - Next fit\n3 - Best fit\n4 - Worst fit\n-> ");
@@ -309,10 +313,10 @@ int main()
                 int inicio = first_fit(heap, &l, tamanho); // Passa a lista por referência
                 if (inicio != -1) 
                 {
-                    printf("Processo alocado a partir da posição %d\n", inicio);
+                    printf("Bloco alocado a partir da posição %d\n", inicio);
                 } else 
                 {
-                    printf("Memória insuficiente para alocar o processo\n");
+                    printf("Memória insuficiente para alocar o bloco\n");
                 }
             }
             if (op2 == 2) 
@@ -320,10 +324,10 @@ int main()
                 int inicio = next_fit(heap, &l, tamanho); // Passa a lista por referência
                 if (inicio != -1) 
                 {
-                    printf("Processo alocado a partir da posição %d\n", inicio);
+                    printf("Bloco alocado a partir da posição %d\n", inicio);
                 } else 
                 {
-                    printf("Memória insuficiente para alocar o processo\n");
+                    printf("Memória insuficiente para alocar o bloco\n");
                 }
             }
             if (op2 == 3) 
@@ -331,10 +335,10 @@ int main()
                 int inicio = best_fit(heap, &l, tamanho); // Passa a lista por referência
                 if (inicio != -1) 
                 {
-                    printf("Processo alocado a partir da posição %d\n", inicio);
+                    printf("Bloco alocado a partir da posição %d\n", inicio);
                 } else 
                 {
-                    printf("Memória insuficiente para alocar o processo\n");
+                    printf("Memória insuficiente para alocar o bloco\n");
                 }
             }
             if (op2 == 4) 
@@ -342,10 +346,10 @@ int main()
                 int inicio = worst_fit(heap, &l, tamanho); // Passa a lista por referência
                 if (inicio != -1) 
                 {
-                    printf("Processo alocado a partir da posição %d\n", inicio);
+                    printf("Bloco alocado a partir da bloco %d\n", inicio);
                 } else 
                 {
-                    printf("Memória insuficiente para alocar o processo\n");
+                    printf("Memória insuficiente para alocar o bloco\n");
                 }
             }
         }
@@ -353,14 +357,14 @@ int main()
         if (op == 3) 
         {
             int inicio_remover, tamanho_remover;
-            printf("\nDigite a posição de início do processo a ser removido: ");
+            printf("\nDigite a posição de início do bloco a ser removido: ");
             scanf("%d", &inicio_remover);
-            printf("Digite o tamanho do processo a ser removido: ");
+            printf("Digite o tamanho do bloco a ser removido: ");
             scanf("%d", &tamanho_remover);
 
             // Chama a função de remoção
-            remover_processos(heap, &l, inicio_remover, tamanho_remover);
-            printf("Processo removido com sucesso.\n");
+            remover_bloco(heap, &l, inicio_remover, tamanho_remover);
+            printf("bloco removido com sucesso.\n");
         }
 
         if (op == 4) 
@@ -375,5 +379,11 @@ int main()
     }
 
     free(heap);
+    lista*temp=l;
+    while(l!=NULL)
+    {
+    	l=l->prox;
+    	free(temp);
+    }
     return 0;
 }
