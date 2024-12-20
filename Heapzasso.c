@@ -384,6 +384,7 @@ int main()
     {
     	l=l->prox;
     	free(temp);
+        temp=l;
     }
     return 0;
 }
